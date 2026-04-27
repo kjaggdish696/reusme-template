@@ -30,7 +30,7 @@ export default function TemplatesPage() {
         templateId: localResume.templateId,
         data: localResume as unknown as object,
       });
-      localResume.id = dbResume.id;
+      localResume.id = dbResume.id!;
       
       dispatch({ type: "CREATE_RESUME", resume: localResume });
       navigate(`/editor/${localResume.id}`);

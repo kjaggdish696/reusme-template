@@ -17,6 +17,7 @@ export interface AuthUser {
   email: string;
   provider: "email" | "google";
   avatarColor: string;
+  photoURL?: string | null;
 }
 
 interface AuthContextValue {
@@ -26,6 +27,7 @@ interface AuthContextValue {
   loginWithGoogle: () => Promise<AuthUser>;
   register: (name: string, email: string, password: string) => Promise<AuthUser>;
   logout: () => void;
+  setUser: (user: AuthUser | null) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -48,6 +50,7 @@ function toAuthUser(fbUser: FirebaseUser): AuthUser {
     email,
     provider,
     avatarColor: pickColor(email),
+    photoURL: fbUser.photoURL,
   };
 }
 
@@ -89,6 +92,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await signOut(firebaseAuth);
         setUser(null);
       },
+
+      setUser,
     }),
     [user, loading],
   );

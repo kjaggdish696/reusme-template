@@ -11,7 +11,7 @@ const NAV = [
 
 export default function AppShell() {
   const { user, logout } = useAuth();
-  const { saveStatus, lastSavedAt } = useEditor();
+  useEditor();
   const navigate = useNavigate();
   const location = useLocation();
   const isEditor = location.pathname.startsWith("/editor/");
@@ -108,23 +108,6 @@ export default function AppShell() {
   );
 }
 
-function SaveStatus({ saveStatus, lastSavedAt }: { saveStatus: string; lastSavedAt: number | null }) {
-  let label = "Auto-save ready";
-  let dot = "bg-ink-300";
-  if (saveStatus === "saving") {
-    label = "Saving changes…";
-    dot = "bg-amber-400 animate-pulse";
-  } else if (saveStatus === "saved") {
-    label = `Saved${lastSavedAt ? ` · ${new Date(lastSavedAt).toLocaleTimeString()}` : ""}`;
-    dot = "bg-emerald-500";
-  }
-  return (
-    <span className="inline-flex items-center gap-2">
-      <span className={cn("h-2 w-2 rounded-full", dot)} />
-      {label}
-    </span>
-  );
-}
 
 function UserMenu({ 
   name, 

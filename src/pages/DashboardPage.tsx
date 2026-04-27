@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEditor } from "../store/EditorContext";
 import { makeBlankResume } from "../data/seed";
-import { uid } from "../lib/id";
 import { useAuth } from "../store/AuthContext";
 import ResumeMiniPreview from "../components/templates/ResumeMiniPreview";
 import { createResume, deleteResume } from "../lib/api";
@@ -20,7 +19,7 @@ export default function DashboardPage() {
         templateId: localResume.templateId,
         data: localResume as unknown as object,
       });
-      localResume.id = dbResume.id;
+      localResume.id = dbResume.id!;
       
       dispatch({ type: "CREATE_RESUME", resume: localResume });
       navigate(`/editor/${localResume.id}`);
@@ -45,7 +44,7 @@ export default function DashboardPage() {
         templateId: copy.templateId,
         data: copy,
       });
-      copy.id = dbResume.id; // Assign real backend ID
+      copy.id = dbResume.id!; // Assign real backend ID
       dispatch({ type: "DUPLICATE_RESUME", resumeId, newResume: copy });
     } catch (e: any) {
       console.error("Failed to duplicate resume in database", e);

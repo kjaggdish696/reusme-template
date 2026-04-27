@@ -372,24 +372,6 @@ export default function EditorPage() {
   );
 }
 
-function SaveStatus({ status }: { status: "idle" | "saving" | "saved" }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-medium text-ink-500">
-      <span
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          status === "saving" ? "animate-pulse bg-amber-400" : "bg-emerald-500",
-        )}
-      />
-      {status === "saving" ? "Saving…" : "Auto-saved"}
-      {status !== "saving" && (
-        <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
-          <path d="M3 8l3 3 7-7" stroke="#10b981" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )}
-    </span>
-  );
-}
 
 function ToolBtn({
   onClick,
@@ -515,17 +497,3 @@ function RailButton({
   );
 }
 
-function SparkIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path d="M12 3v4" />
-      <path d="M12 17v4" />
-      <path d="M3 12h4" />
-      <path d="M17 12h4" />
-      <path d="M5.6 5.6 8 8" />
-      <path d="M16 16l2.4 2.4" />
-      <path d="M5.6 18.4 8 16" />
-      <path d="M16 8l2.4-2.4" />
-    </svg>
-  );
-}

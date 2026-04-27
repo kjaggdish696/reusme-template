@@ -5,18 +5,15 @@ import {
   useEffect,
   useMemo,
   useReducer,
-  useRef,
   useState,
 } from "react";
 import type { ReactNode } from "react";
 import { editorReducer, initialEditorState } from "./editorReducer";
 import type { EditorAction, EditorState } from "./editorReducer";
 import type { Resume } from "../types/resume";
-import { getResumes, createResume, saveResume, deleteResume } from "../lib/api";
-import { makeBlankResume, makeSampleResume } from "../data/seed";
+import { getResumes, saveResume } from "../lib/api";
 import { firebaseAuth } from "../lib/firebase";
 
-const ACTIVE_KEY = "rcp.activeResume.v1";
 
 interface EditorContextValue {
   state: EditorState;
@@ -32,17 +29,14 @@ const EditorContext = createContext<EditorContextValue | null>(null);
 
 export function EditorProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(editorReducer, initialEditorState);
-  const [hydrated, setHydrated] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
-  const saveTimer = useRef<number | null>(null);
 
   // ── Load resumes from the backend on mount (once user is signed in) ─────────
   useEffect(() => {
     const unsub = firebaseAuth.onAuthStateChanged(async (fbUser) => {
       if (!fbUser) {
         // Not signed in — clear state and wait
-        setHydrated(false);
         return;
       }
 
@@ -63,7 +57,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         // Do NOT fallback to local data. Show empty state if API fails.
         dispatch({ type: "INIT", resumes: [], activeResumeId: null });
       } finally {
-        setHydrated(true);
+        // Hydration logic removed if not used
       }
     });
     return unsub;
