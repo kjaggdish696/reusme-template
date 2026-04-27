@@ -3,7 +3,7 @@
 import axios from "axios";
 import { firebaseAuth } from "./firebase";
 
-const BASE_URL = "http://127.0.0.1:8001";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
 
 export const apiClient = axios.create({ baseURL: BASE_URL });
 
