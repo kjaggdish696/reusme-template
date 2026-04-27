@@ -56,12 +56,19 @@ export default function AddSectionModal({ open, onClose, onAdd, existingTypes }:
     };
   }, [open, onClose]);
 
+  const categories: { label: string; types: SectionType[]; color: string }[] = [
+    { label: "Core Essentials", types: ["summary", "experience", "education", "skills"], color: "bg-blue-600" },
+    { label: "Professional Extras", types: ["projects", "certifications", "achievements", "volunteering", "awards", "publications"], color: "bg-indigo-600" },
+    { label: "Personal & Social", types: ["languages", "interests", "websites", "photos", "quote", "books"], color: "bg-rose-600" },
+    { label: "Specific & Tools", types: ["courses", "timeChart", "signature", "references", "custom"], color: "bg-emerald-600" },
+  ];
+
   return (
     <AnimatePresence>
       {open && (
         <>
           <motion.div
-            className="fixed inset-0 z-[60] bg-ink-950/40 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] bg-ink-950/70 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -71,80 +78,114 @@ export default function AddSectionModal({ open, onClose, onAdd, existingTypes }:
             role="dialog"
             aria-modal="true"
             aria-label="Add a new section"
-            className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-8"
+            className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
           >
             <motion.div
-              className="relative w-full max-w-5xl max-h-[88vh] overflow-hidden rounded-2xl bg-white shadow-2xl"
-              initial={{ scale: 0.96, y: 20, opacity: 0 }}
+              className="relative w-full max-w-6xl max-h-[92vh] overflow-hidden rounded-[2.5rem] bg-white shadow-2xl"
+              initial={{ scale: 0.9, y: 40, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.96, y: 20, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 28 }}
+              exit={{ scale: 0.9, y: 40, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 350, damping: 30 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button
-                type="button"
-                onClick={onClose}
-                className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center rounded-full text-ink-500 hover:bg-ink-100"
-                aria-label="Close"
-              >
-                ✕
-              </button>
-              <div className="px-6 pt-8 pb-3 text-center sm:px-10 sm:pt-10">
-                <h2 className="text-2xl font-bold text-ink-900 sm:text-3xl">Add a new section</h2>
-                <p className="mt-2 text-sm text-ink-500">
-                  Click on a section to add it to your resume
-                </p>
+              {/* Header */}
+              <div className="relative overflow-hidden bg-brand-600 px-8 py-7 text-white">
+                <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+                
+                <div className="relative flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-black tracking-tight sm:text-2xl">Add a new section</h2>
+                    <p className="mt-1 text-[13px] font-medium text-brand-100">
+                      Bring your story to life with specialized content blocks
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="grid h-10 w-10 place-items-center rounded-full bg-white/20 text-white transition-all hover:bg-white hover:text-brand-700"
+                    aria-label="Close"
+                  >
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-              <div className="thin-scroll max-h-[68vh] overflow-y-auto px-6 pb-8 sm:px-10">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {SECTIONS.map((spec) => {
-                    const used = existingTypes.has(spec.type) && spec.type === "personal";
-                    return (
-                      <button
-                        key={spec.type}
-                        type="button"
-                        onClick={() => {
-                          onAdd(spec.type);
-                          onClose();
-                        }}
-                        className={cn(
-                          "group relative flex flex-col overflow-hidden rounded-xl border bg-white text-left transition",
-                          "hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-pop",
-                          used ? "border-ink-100 opacity-90" : "border-ink-100",
-                        )}
-                      >
-                        <div className="relative aspect-[4/3] w-full bg-white p-4">
-                          {spec.preview}
-                          <div
-                            className={cn(
-                              "pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg bg-brand-600/0 transition group-hover:bg-brand-600/85",
-                            )}
-                          >
-                            <span className="rounded-full bg-white px-4 py-2 text-[12px] font-bold text-brand-700 opacity-0 shadow-md transition group-hover:opacity-100">
-                              Add to resume
-                            </span>
-                          </div>
-                          {spec.premium && (
-                            <span className="absolute bottom-2 right-2 text-[14px] opacity-80" title="Premium style">
-                              👑
-                            </span>
-                          )}
-                          {used && (
-                            <span className="absolute right-2 top-2 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
-                              Added
-                            </span>
-                          )}
+
+              {/* Grid Content */}
+              <div className="thin-scroll max-h-[calc(92vh-160px)] overflow-y-auto px-8 pb-16 pt-8">
+                <div className="space-y-16">
+                  {categories.map((cat) => (
+                    <div key={cat.label} className="space-y-6">
+                      <div className="flex items-center gap-6">
+                        <div className={cn("h-8 px-4 flex items-center rounded-full text-[11px] font-black uppercase tracking-[0.2em] text-white shadow-lg", cat.color)}>
+                          {cat.label}
                         </div>
-                        <div className="border-t border-ink-50 bg-ink-50/40 px-4 py-3 text-center text-[13px] font-semibold text-ink-700 group-hover:text-brand-700">
-                          {SECTION_LABELS[spec.type]}
-                        </div>
-                      </button>
-                    );
-                  })}
+                        <div className="h-px flex-1 bg-ink-100" />
+                      </div>
+                      
+                      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {cat.types.map((type) => {
+                          const spec = SECTIONS.find(s => s.type === type);
+                          if (!spec) return null;
+                          const used = existingTypes.has(spec.type) && (spec.type === "personal" || spec.type === "summary");
+                          
+                          return (
+                            <button
+                              key={spec.type}
+                              type="button"
+                              onClick={() => {
+                                onAdd(spec.type);
+                                onClose();
+                              }}
+                              className={cn(
+                                "group relative flex flex-col overflow-hidden rounded-[1.5rem] border-2 bg-white p-1.5 text-left transition-all duration-500",
+                                "hover:-translate-y-2 hover:shadow-2xl",
+                                used ? "border-ink-100 opacity-60 cursor-not-allowed" : "border-ink-50 hover:border-brand-500"
+                              )}
+                              disabled={used}
+                            >
+                              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[1.25rem] bg-ink-50/50 p-4 transition-colors group-hover:bg-brand-50/10">
+                                <div className="scale-[0.85] origin-top transition-transform duration-500 group-hover:scale-[0.9]">
+                                  {spec.preview}
+                                </div>
+                                
+                                <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-brand-600/0 transition-all duration-500 group-hover:bg-brand-600/90">
+                                  <div className="translate-y-4 rounded-full bg-white px-6 py-2.5 text-[12px] font-black text-brand-700 opacity-0 shadow-2xl transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                                    ADD THIS SECTION
+                                  </div>
+                                </div>
+                                
+                                {spec.premium && (
+                                  <span className="absolute bottom-3 right-3 flex h-6 w-6 items-center justify-center rounded-full bg-amber-100 text-[12px] shadow-sm" title="Premium style">
+                                    ✨
+                                  </span>
+                                )}
+                              </div>
+                              
+                              <div className="px-4 py-4">
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="text-[14px] font-black text-ink-900 group-hover:text-brand-700 transition-colors">
+                                    {SECTION_LABELS[spec.type]}
+                                  </span>
+                                  {used && (
+                                    <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[9px] font-black text-emerald-700 uppercase tracking-widest shadow-sm">
+                                      Active
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </motion.div>

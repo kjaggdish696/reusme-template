@@ -137,11 +137,19 @@ export default function EditorPage() {
     }
   }
 
+  const [shareToast, setShareToast] = useState(false);
+
   function handleShare() {
     const url = `${window.location.origin}/share/${resume!.id}`;
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).catch(() => undefined);
-      alert(`Share link copied to clipboard:\n${url}`);
+      navigator.clipboard.writeText(url)
+        .then(() => {
+          setShareToast(true);
+          setTimeout(() => setShareToast(false), 3000);
+        })
+        .catch(() => {
+          alert(`Share link:\n${url}`);
+        });
     } else {
       alert(`Share link:\n${url}`);
     }
@@ -368,6 +376,30 @@ export default function EditorPage() {
           mode={viewMode}
         />
       </div>
+
+      {/* Share Toast Notification */}
+      {shareToast && (
+        <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-2xl border border-emerald-100 bg-white px-5 py-3 shadow-pop animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="grid h-8 w-8 place-items-center rounded-full bg-emerald-500 text-white shadow-sm">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <div>
+            <div className="text-sm font-bold text-ink-900">Share link copied!</div>
+            <div className="text-[11px] text-ink-500">Anyone with the link can view this resume.</div>
+          </div>
+          <button 
+            onClick={() => setShareToast(false)}
+            className="ml-2 rounded-lg p-1 text-ink-400 hover:bg-ink-50"
+          >
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
