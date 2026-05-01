@@ -31,6 +31,7 @@ export default function EditorPage() {
   const [pdfExportSnapshot, setPdfExportSnapshot] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("edit");
   const [mobilePane, setMobilePane] = useState<MobilePane>("panel");
+  const [forceDesktopView, setForceDesktopView] = useState(false);
 
   const [panelWidth, setPanelWidth] = useState(320);
 
@@ -288,37 +289,66 @@ export default function EditorPage() {
       </div>
 
       {/* Main shell: rail + panel + canvas */}
-      <div 
-        className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[60px_var(--panel-width)_1fr]"
+      <div
+        className={cn(
+          "grid min-h-0 flex-1",
+          forceDesktopView ? "grid-cols-[60px_var(--panel-width)_1fr] min-w-[980px]" : "grid-cols-1 lg:grid-cols-[60px_var(--panel-width)_1fr]",
+        )}
         style={{ "--panel-width": `${panelWidth}px` } as any}
       >
-        <div className="border-b border-ink-100 bg-white px-3 py-2 lg:hidden">
-          <div className="inline-flex w-full rounded-lg bg-ink-100 p-1">
+        <div className={cn("border-b border-ink-100 bg-white px-3 py-2 lg:hidden", forceDesktopView && "hidden")}>
+          <div className="flex items-center gap-2">
+            <div className="inline-flex flex-1 rounded-lg bg-ink-100 p-1">
+              <button
+                type="button"
+                onClick={() => setMobilePane("panel")}
+                className={cn(
+                  "flex-1 rounded-md px-3 py-1.5 text-xs font-semibold transition",
+                  mobilePane === "panel" ? "bg-white text-ink-900 shadow-sm" : "text-ink-600",
+                )}
+              >
+                Panel
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobilePane("canvas")}
+                className={cn(
+                  "flex-1 rounded-md px-3 py-1.5 text-xs font-semibold transition",
+                  mobilePane === "canvas" ? "bg-white text-ink-900 shadow-sm" : "text-ink-600",
+                )}
+              >
+                Canvas
+              </button>
+            </div>
             <button
               type="button"
-              onClick={() => setMobilePane("panel")}
-              className={cn(
-                "flex-1 rounded-md px-3 py-1.5 text-xs font-semibold transition",
-                mobilePane === "panel" ? "bg-white text-ink-900 shadow-sm" : "text-ink-600",
-              )}
+              onClick={() => setForceDesktopView(true)}
+              className="rounded-lg border border-ink-200 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-ink-700 hover:bg-ink-50"
             >
-              Panel
-            </button>
-            <button
-              type="button"
-              onClick={() => setMobilePane("canvas")}
-              className={cn(
-                "flex-1 rounded-md px-3 py-1.5 text-xs font-semibold transition",
-                mobilePane === "canvas" ? "bg-white text-ink-900 shadow-sm" : "text-ink-600",
-              )}
-            >
-              Canvas
+              Desktop View
             </button>
           </div>
         </div>
 
+        {forceDesktopView && (
+          <div className="col-span-full border-b border-ink-100 bg-white px-3 py-2 lg:hidden">
+            <button
+              type="button"
+              onClick={() => setForceDesktopView(false)}
+              className="rounded-lg border border-ink-200 bg-white px-3 py-1.5 text-xs font-semibold text-ink-700 hover:bg-ink-50"
+            >
+              Exit Desktop View
+            </button>
+          </div>
+        )}
+
         {/* Slim icon rail */}
-        <nav className="hidden flex-col items-center gap-1 border-r border-ink-100 bg-white py-3 lg:flex">
+        <nav
+          className={cn(
+            "flex-col items-center gap-1 border-r border-ink-100 bg-white py-3",
+            forceDesktopView ? "flex" : "hidden lg:flex",
+          )}
+        >
           <RailButton active={tab === "outline"} onClick={() => setTab("outline")} icon="≡" label="Outline" />
           <RailButton active={tab === "details"} onClick={() => setTab("details")} icon="✎" label="Details" />
           <RailButton active={tab === "templates"} onClick={() => setTab("templates")} icon="◫" label="Templates" />
@@ -329,11 +359,11 @@ export default function EditorPage() {
         <aside
           className={cn(
             "thin-scroll min-h-0 flex-col overflow-hidden border-r border-ink-100 bg-white",
-            mobilePane === "panel" ? "flex" : "hidden",
-            "lg:flex",
+            forceDesktopView ? "flex" : mobilePane === "panel" ? "flex" : "hidden",
+            !forceDesktopView && "lg:flex",
           )}
         >
-          <div className="lg:hidden border-b border-ink-100 px-3 py-2">
+          <div className={cn("border-b border-ink-100 px-3 py-2", forceDesktopView ? "hidden" : "lg:hidden")}>
             <div className="flex items-center gap-1">
               {(["outline", "details", "templates", "design"] as Tab[]).map((t) => (
                 <button
@@ -400,7 +430,13 @@ export default function EditorPage() {
         </aside>
 
         {/* Canvas area */}
-        <div className={cn(mobilePane === "canvas" ? "block" : "hidden", "min-h-0 lg:block")}>
+        <div
+          className={cn(
+            "min-h-0",
+            forceDesktopView ? "block" : mobilePane === "canvas" ? "block" : "hidden",
+            !forceDesktopView && "lg:block",
+          )}
+        >
           <EditorCanvas
             resume={resume}
             printRef={printRef}
