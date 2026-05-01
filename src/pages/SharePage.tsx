@@ -38,7 +38,7 @@ export default function SharePage() {
             It may have been deleted, or the link is invalid.
           </p>
           <Link to="/" className="mt-5 inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white">
-            ← Back to ResumeCraft
+            ← Back to Nano Resume
           </Link>
         </div>
       </div>

@@ -47,9 +47,9 @@ export default function LandingPage() {
       <div className="fixed left-0 right-0 top-4 z-50 mx-auto max-w-5xl px-4 sm:px-6">
         <header className="flex items-center justify-between rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-glass backdrop-blur-md transition-all hover:bg-white/85 md:px-6">
           <Link to="/" className="group flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-extrabold text-white shadow-pop transition-transform group-hover:scale-105">RC</span>
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-extrabold text-white shadow-pop transition-transform group-hover:scale-105">NR</span>
             <div className="hidden sm:block">
-              <div className="text-base font-extrabold tracking-tight text-ink-900">ResumeCraft <span className="text-brand-600">Pro</span></div>
+              <div className="text-base font-extrabold tracking-tight text-ink-900">Nano <span className="text-brand-600">Resume</span></div>
             </div>
           </Link>
           <nav className="hidden items-center gap-8 text-sm font-bold text-ink-600 md:flex">
@@ -211,7 +211,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-ink-500 sm:flex-row">
-        <span>© {new Date().getFullYear()} ResumeCraft Pro · Built with care</span>
+        <span>© {new Date().getFullYear()} Nano Resume · Built with care</span>
         <div className="flex items-center gap-5">
           <a href="#" className="hover:text-ink-700">Privacy</a>
           <a href="#" className="hover:text-ink-700">Terms</a>

@@ -29,12 +29,12 @@ export default function AppShell() {
           onClick={() => navigate("/dashboard")}
           className="mb-8 flex items-center gap-2 text-left"
         >
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-white shadow-pop">
-            <SparkIcon className="h-5 w-5" />
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-xs font-extrabold text-white shadow-pop">
+            NR
           </span>
           <div>
-            <div className="text-base font-bold tracking-tight">ResumeCraft</div>
-            <div className="text-[11px] uppercase tracking-[0.18em] text-ink-400">Pro Builder</div>
+            <div className="text-base font-bold tracking-tight">Nano Resume</div>
+            <div className="text-[11px] uppercase tracking-[0.18em] text-ink-400">Resume Builder</div>
           </div>
         </button>
         <nav className="flex flex-col gap-1">
@@ -64,18 +64,18 @@ export default function AppShell() {
       <div className="flex min-h-screen flex-1 flex-col">
         <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-ink-100 bg-white/85 px-4 py-3 backdrop-blur lg:px-8">
           <div className="flex items-center gap-3 lg:hidden">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white">
-              <SparkIcon className="h-4 w-4" />
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-[11px] font-extrabold text-white">
+              NR
             </span>
-            <span className="text-sm font-bold">ResumeCraft</span>
+            <span className="text-sm font-bold">Nano Resume</span>
           </div>
           {/* Logo (Desktop) - Shown only when sidebar is hidden (Editor) */}
           {isEditor && (
             <div className="hidden items-center gap-2 lg:flex">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white shadow-pop">
-                <SparkIcon className="h-4.5 w-4.5" />
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-[11px] font-extrabold text-white shadow-pop">
+                NR
               </span>
-              <span className="text-[15px] font-bold tracking-tight text-ink-900">ResumeCraft</span>
+              <span className="text-[15px] font-bold tracking-tight text-ink-900">Nano Resume</span>
             </div>
           )}
           <div className="hidden flex-1 lg:block" />
@@ -182,20 +182,6 @@ function GridIcon(props: React.SVGProps<SVGSVGElement>) {
       <rect x="14" y="3" width="7" height="7" rx="2" />
       <rect x="3" y="14" width="7" height="7" rx="2" />
       <rect x="14" y="14" width="7" height="7" rx="2" />
-    </svg>
-  );
-}
-function SparkIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path d="M12 3v4" />
-      <path d="M12 17v4" />
-      <path d="M3 12h4" />
-      <path d="M17 12h4" />
-      <path d="M5.6 5.6 8 8" />
-      <path d="M16 16l2.4 2.4" />
-      <path d="M5.6 18.4 8 16" />
-      <path d="M16 8l2.4-2.4" />
     </svg>
   );
 }

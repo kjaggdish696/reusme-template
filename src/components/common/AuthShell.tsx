@@ -13,8 +13,8 @@ export default function AuthShell({ title, subtitle, children, footer }: Props) 
     <div className="grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
       <div className="relative hidden flex-col justify-between bg-gradient-to-br from-brand-700 via-brand-600 to-indigo-500 p-12 text-white lg:flex">
         <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold opacity-90">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-white/15 backdrop-blur">RC</span>
-          ResumeCraft Pro
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-white/15 backdrop-blur">NR</span>
+          Nano Resume
         </Link>
 
         <div className="space-y-6">
@@ -51,8 +51,8 @@ export default function AuthShell({ title, subtitle, children, footer }: Props) 
       <div className="flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-md">
           <Link to="/" className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 lg:hidden">
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-brand-600 text-white">RC</span>
-            ResumeCraft Pro
+            <span className="grid h-8 w-8 place-items-center rounded-xl bg-brand-600 text-white">NR</span>
+            Nano Resume
           </Link>
           <div className="mb-8">
             <h2 className="text-3xl font-extrabold tracking-tight text-ink-900">{title}</h2>
