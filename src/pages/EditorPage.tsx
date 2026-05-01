@@ -14,6 +14,7 @@ import { cn } from "../lib/classnames";
 
 type Tab = "outline" | "details" | "templates" | "design";
 type ViewMode = "edit" | "preview";
+type MobilePane = "panel" | "canvas";
 
 export default function EditorPage() {
   const { resumeId } = useParams<{ resumeId: string }>();
@@ -29,6 +30,7 @@ export default function EditorPage() {
   /** Mounts a hidden 1:1 preview clone for raster PDF export. */
   const [pdfExportSnapshot, setPdfExportSnapshot] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("edit");
+  const [mobilePane, setMobilePane] = useState<MobilePane>("panel");
 
   const [panelWidth, setPanelWidth] = useState(320);
 
@@ -37,6 +39,7 @@ export default function EditorPage() {
     setSelectedSectionId(id);
     if (id !== null && viewMode === "edit") {
       setTab("details");
+      setMobilePane("panel");
     }
   }
 
@@ -156,7 +159,7 @@ export default function EditorPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-57px)] flex-col bg-ink-50">
+    <div className="flex h-[calc(100dvh-57px)] flex-col bg-ink-50">
       {/* App top bar */}
       <div className="no-print sticky top-0 z-30 flex items-center gap-2 border-b border-ink-100 bg-white px-3 py-2">
         <button
@@ -289,6 +292,31 @@ export default function EditorPage() {
         className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[60px_var(--panel-width)_1fr]"
         style={{ "--panel-width": `${panelWidth}px` } as any}
       >
+        <div className="border-b border-ink-100 bg-white px-3 py-2 lg:hidden">
+          <div className="inline-flex w-full rounded-lg bg-ink-100 p-1">
+            <button
+              type="button"
+              onClick={() => setMobilePane("panel")}
+              className={cn(
+                "flex-1 rounded-md px-3 py-1.5 text-xs font-semibold transition",
+                mobilePane === "panel" ? "bg-white text-ink-900 shadow-sm" : "text-ink-600",
+              )}
+            >
+              Panel
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobilePane("canvas")}
+              className={cn(
+                "flex-1 rounded-md px-3 py-1.5 text-xs font-semibold transition",
+                mobilePane === "canvas" ? "bg-white text-ink-900 shadow-sm" : "text-ink-600",
+              )}
+            >
+              Canvas
+            </button>
+          </div>
+        </div>
+
         {/* Slim icon rail */}
         <nav className="hidden flex-col items-center gap-1 border-r border-ink-100 bg-white py-3 lg:flex">
           <RailButton active={tab === "outline"} onClick={() => setTab("outline")} icon="≡" label="Outline" />
@@ -298,7 +326,13 @@ export default function EditorPage() {
         </nav>
 
         {/* Side panel */}
-        <aside className="thin-scroll flex min-h-0 flex-col overflow-hidden border-r border-ink-100 bg-white">
+        <aside
+          className={cn(
+            "thin-scroll min-h-0 flex-col overflow-hidden border-r border-ink-100 bg-white",
+            mobilePane === "panel" ? "flex" : "hidden",
+            "lg:flex",
+          )}
+        >
           <div className="lg:hidden border-b border-ink-100 px-3 py-2">
             <div className="flex items-center gap-1">
               {(["outline", "details", "templates", "design"] as Tab[]).map((t) => (
@@ -311,7 +345,7 @@ export default function EditorPage() {
                     tab === t ? "bg-brand-600 text-white" : "text-ink-600 hover:bg-ink-100",
                   )}
                 >
-                  {t}
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
                 </button>
               ))}
             </div>
@@ -366,15 +400,17 @@ export default function EditorPage() {
         </aside>
 
         {/* Canvas area */}
-        <EditorCanvas
-          resume={resume}
-          printRef={printRef}
-          pdfSnapshotRef={pdfSnapshotRef}
-          pdfExportSnapshot={pdfExportSnapshot}
-          selectedSectionId={selectedSectionId}
-          onSelectSection={handleSelectSection}
-          mode={viewMode}
-        />
+        <div className={cn(mobilePane === "canvas" ? "block" : "hidden", "min-h-0 lg:block")}>
+          <EditorCanvas
+            resume={resume}
+            printRef={printRef}
+            pdfSnapshotRef={pdfSnapshotRef}
+            pdfExportSnapshot={pdfExportSnapshot}
+            selectedSectionId={selectedSectionId}
+            onSelectSection={handleSelectSection}
+            mode={viewMode}
+          />
+        </div>
       </div>
 
       {/* Share Toast Notification */}
@@ -518,13 +554,13 @@ function RailButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "group relative grid h-11 w-11 place-items-center rounded-lg text-base font-bold transition",
+        "group relative flex h-14 w-14 flex-col items-center justify-center rounded-lg transition",
         active ? "bg-brand-600 text-white shadow-pop" : "text-ink-500 hover:bg-ink-100",
       )}
       title={label}
     >
-      <span aria-hidden>{icon}</span>
-      <span className="sr-only">{label}</span>
+      <span aria-hidden className="text-base font-bold leading-none">{icon}</span>
+      <span className="mt-0.5 text-[10px] font-semibold leading-none">{label}</span>
     </button>
   );
 }
