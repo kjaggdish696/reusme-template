@@ -213,9 +213,10 @@ export default function LandingPage() {
       <footer className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-ink-500 sm:flex-row">
         <span>© {new Date().getFullYear()} Nano Resume · Built with care</span>
         <div className="flex items-center gap-5">
-          <a href="#" className="hover:text-ink-700">Privacy</a>
-          <a href="#" className="hover:text-ink-700">Terms</a>
-          <a href="#" className="hover:text-ink-700">Contact</a>
+          <Link to="/privacy" className="hover:text-ink-700">Privacy</Link>
+          <Link to="/terms" className="hover:text-ink-700">Terms</Link>
+          <Link to="/contact" className="hover:text-ink-700">Contact</Link>
+          <Link to="/blog" className="hover:text-ink-700">Blog</Link>
         </div>
       </footer>
     </div>

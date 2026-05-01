@@ -7,6 +7,10 @@ import TemplatesPage from "./pages/TemplatesPage";
 import EditorPage from "./pages/EditorPage";
 import ProfilePage from "./pages/ProfilePage";
 import SharePage from "./pages/SharePage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
+import ContactPage from "./pages/ContactPage";
+import BlogPage from "./pages/BlogPage";
 import { AuthProvider } from "./store/AuthContext";
 import { EditorProvider } from "./store/EditorContext";
 import RequireAuth from "./components/common/RequireAuth";
@@ -18,6 +22,10 @@ export default function App() {
       <EditorProvider>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/blog" element={<BlogPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route
