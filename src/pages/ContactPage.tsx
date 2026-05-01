@@ -25,7 +25,7 @@ export default function ContactPage() {
             </div>
             <div className="rounded-2xl border border-ink-100 bg-ink-50 p-5">
               <div className="text-xs font-semibold uppercase tracking-widest text-brand-600">Phone</div>
-              <p className="mt-2 text-sm text-ink-700">+91 98765 43210</p>
+              <p className="mt-2 text-sm text-ink-700">98828-63191</p>
             </div>
             <div className="rounded-2xl border border-ink-100 bg-ink-50 p-5">
               <div className="text-xs font-semibold uppercase tracking-widest text-brand-600">Office Hours</div>
